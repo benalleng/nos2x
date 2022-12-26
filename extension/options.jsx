@@ -8,6 +8,7 @@ function Options() {
   let [key, setKey] = useState('')
   let [permissions, setPermissions] = useState()
   let [message, setMessage] = useState('')
+  let [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   useEffect(() => {
     browser.storage.local.get(['private_key']).then(results => {
@@ -32,12 +33,21 @@ function Options() {
 
   return (
     <>
-      <h1>nos2x</h1>
-      <p>nostr signer extension</p>
-      <h2>options</h2>
+    <main className='options'>
+      <section className='header'>
+      <span className='logo'>
+        <img src="./icons/astral.svg"/>
+      </span>
+      <span className='astral-1'>astral</span><span className='astral-2'>Sign</span>
+      </section>
+      <p className='astral-desc'>nostr signer extension</p>
+      <h2 className='title'>options</h2>
       <label>
         private key:&nbsp;
-        <input value={key} onChange={handleKeyChange} />
+        <input type={isPasswordVisible ? "text" : "password"} value={key} onChange={handleKeyChange} />
+        <button onClick={() => handlePasswordVisibility()}>
+        {isPasswordVisible ? "Hide private key" : "Show private key"}
+        </button>
       </label>
       {permissions?.length > 0 && (
         <>
@@ -71,6 +81,7 @@ function Options() {
         </>
       )}
       <div>{message}</div>
+      </main>
     </>
   )
 
@@ -85,6 +96,10 @@ function Options() {
       setMessage('saved!')
       setTimeout(setMessage, 3000)
     }
+  }
+
+  function handlePasswordVisibility() {
+    setIsPasswordVisible(!isPasswordVisible);
   }
 }
 
