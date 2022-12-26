@@ -12,6 +12,7 @@ function Options() {
   let [newRelayURL, setNewRelayURL] = useState('')
   let [permissions, setPermissions] = useState()
   let [message, setMessage] = useState('')
+  let [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const showMessage = useCallback(msg => {
     setMessage(msg)
@@ -51,103 +52,55 @@ function Options() {
 
   return (
     <>
-      <h1>nos2x</h1>
-      <p>nostr signer extension</p>
-      <h2>options</h2>
-      <div style={{marginBottom: '10px'}}>
-        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-          <span>preferred relays:</span>
-          <button onClick={saveRelays}>save</button>
-        </div>
-        <div style={{marginLeft: '10px'}}>
-          {relays.map(({url, policy}, i) => (
-            <div key={i} style={{display: 'flex'}}>
-              <input
-                style={{marginRight: '10px', width: '400px'}}
-                value={url}
-                onChange={changeRelayURL.bind(null, i)}
-              />
-              <label>
-                read
-                <input
-                  type="checkbox"
-                  checked={policy.read}
-                  onChange={toggleRelayPolicy.bind(null, i, 'read')}
-                />
-              </label>
-              <label>
-                write
-                <input
-                  type="checkbox"
-                  checked={policy.write}
-                  onChange={toggleRelayPolicy.bind(null, i, 'write')}
-                />
-              </label>
-            </div>
-          ))}
-          <div style={{display: 'flex'}}>
-            <input
-              style={{width: '400px'}}
-              value={newRelayURL}
-              onChange={e => setNewRelayURL(e.target.value)}
-              onBlur={addNewRelay}
-            />
-          </div>
-        </div>
-      </div>
-      <div>
-        <label>
-          <div>private key:&nbsp;</div>
-          <div style={{marginLeft: '10px'}}>
-            <div style={{display: 'flex'}}>
-              <input
-                style={{width: '500px'}}
-                value={key}
-                onChange={handleKeyChange}
-              />
-              {key === '' && <button onClick={generate}>generate</button>}
-            </div>
-            <button
-              disabled={!(key.match(/^[a-f0-9]{64}$/) || key === '')}
-              onClick={saveKey}
-            >
-              save
-            </button>
-          </div>
-        </label>
-        {permissions?.length > 0 && (
-          <>
-            <h2>permissions</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>domain</th>
-                  <th>permissions</th>
-                  <th>condition</th>
-                  <th>since</th>
+    <main className='options'>
+      <section className='header'>
+      <span className='logo'>
+        <img src="./icons/astral.svg"/>
+      </span>
+      <span className='astral-1'>astral</span><span className='astral-2'>Sign</span>
+      </section>
+      <p className='astral-desc'>nostr signer extension</p>
+      <h2 className='title'>options</h2>
+      <label>
+        private key:&nbsp;
+        <input type={isPasswordVisible ? "text" : "password"} value={key} onChange={handleKeyChange} />
+        <button onClick={() => handlePasswordVisibility()}>
+        {isPasswordVisible ? "Hide private key" : "Show private key"}
+        </button>
+      </label>
+      {permissions?.length > 0 && (
+        <>
+          <h2>permissions</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>domain</th>
+                <th>permissions</th>
+                <th>condition</th>
+                <th>since</th>
+              </tr>
+            </thead>
+            <tbody>
+              {permissions.map(({host, level, condition, created_at}) => (
+                <tr key={host}>
+                  <td>{host}</td>
+                  <td>{getPermissionsString(level)}</td>
+                  <td>{condition}</td>
+                  <td>
+                    {new Date(created_at * 1000)
+                      .toISOString()
+                      .split('.')[0]
+                      .split('T')
+                      .join(' ')}
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {permissions.map(({host, level, condition, created_at}) => (
-                  <tr key={host}>
-                    <td>{host}</td>
-                    <td>{getPermissionsString(level)}</td>
-                    <td>{condition}</td>
-                    <td>
-                      {new Date(created_at * 1000)
-                        .toISOString()
-                        .split('.')[0]
-                        .split('T')
-                        .join(' ')}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </>
-        )}
-      </div>
-      <div style={{marginTop: '12px', fontSize: '120%'}}>{message}</div>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
+      <div>{message}</div>
+      </main>
     </>
   )
 
@@ -204,6 +157,10 @@ function Options() {
       )
     })
     showMessage('saved relays!')
+  }
+
+  function handlePasswordVisibility() {
+    setIsPasswordVisible(!isPasswordVisible);
   }
 }
 

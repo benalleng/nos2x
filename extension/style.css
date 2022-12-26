@@ -1,0 +1,167 @@
+@import url('https://rsms.me/inter/inter.css');
+html { font-family: 'Inter', sans-serif; }
+@supports (font-variation-settings: normal) {
+    html { font-family: 'Inter var', sans-serif; }
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: auto;
+    font-size: 1.6em;
+    font-weight: 400;
+    letter-spacing: -0.044em;
+    line-height: 1.6;
+    color: #fff;
+    height: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter var', sans-serif;
+}
+
+b {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid;
+    padding: 1px 2px;
+}
+
+.logo {
+    margin-bottom: 0;
+    letter-spacing: -0.05em;
+}
+
+.logo img {
+    padding-right: 18px;
+    width: 60px;
+}
+
+.options .logo > img {
+    padding-right: 18px;
+    width: 80px;
+}
+
+.popup {
+    display: flex; 
+    flex-direction: column;
+    color: #fff;
+    width: 350px;
+    padding-bottom: 8px;
+    background: #1f1f1f;
+}
+
+
+.header {
+    display: flex;
+    margin-left: 15px;
+    flex-direction: row;
+    align-items: center;
+}
+
+.options > .header {
+    margin-left: 85px;
+    margin-top: 20px;;
+}
+
+.astral-1{
+    font-size: 4rem;
+    letter-spacing: -0.08em;
+    font-weight: 100;
+    font-family: system-ui;
+}
+
+.astral-2 {
+    font-size: 4rem;
+    letter-spacing: -0.08em;
+    font-weight: 100;
+    font-family: 'Inter var', sans-serif;
+    color: #5af2e0;
+}
+
+.public-key-field {
+    font-size: 0.9rem;
+    color: #fff;
+    padding-top: 8px;
+    padding-right: 8px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    width: 200px;
+    word-break: break-all;
+    white-space: pre-wrap;
+}
+
+.tooltip {
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.options-link {
+    font-size: 0.9rem;
+    font-family: -system-ui, sans-serif;
+    color: #fff;
+}
+
+.options {
+    height: 100%;
+    display: flex;
+    flex-direction: column;  
+    color: #fff;
+    background: #1f1f1f;
+}
+
+.options-title {
+    margin: auto;
+    font-size: 48px;
+}
+
+.prompt {
+    height: 100%;
+    display: flex;
+    flex-direction: column;  
+    color: #fff;
+    background: #1f1f1f;
+}
+
+.params {
+    background-color: #1f1f1f;
+}
+
+.sign-selection {
+    background-color: #1f1f1f;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.forever-btn, .expireable-btn, .single-btn, .no-btn {
+    background: #0000;
+    outline: 0 !important;
+    color: #5af2e0;
+}
+
+.forever-btn:hover, .expireable-btn:hover, .single-btn:hover, .no-btn:hover {
+    cursor: pointer;
+}
+
+#public-key:hover {
+    cursor: pointer;
+}
+
+#main {
+    height: 100%;
+}
+
+@media (max-width: 600px) {
+    .json-fields {
+        display: none;
+    }
+}

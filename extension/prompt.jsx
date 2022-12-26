@@ -1,6 +1,7 @@
 import browser from 'webextension-polyfill'
 import {render} from 'react-dom'
 import React from 'react'
+import kinds from './kinds.json'
 
 import {getAllowedCapabilities} from './common'
 
@@ -19,6 +20,7 @@ function Prompt() {
 
   return (
     <>
+    <main className='prompt'>
       <div>
         <b style={{display: 'block', textAlign: 'center', fontSize: '200%'}}>
           {host}
@@ -27,45 +29,78 @@ function Prompt() {
         <ul>
           {getAllowedCapabilities(level).map(cap => (
             <li key={cap}>
-              <i style={{fontSize: '140%'}}>{cap}</i>
+              <i>{cap}</i>
             </li>
           ))}
         </ul>
       </div>
-      {params && (
+      {params.event ? (
         <>
-          <p>now acting on</p>
-          <pre style={{overflow: 'auto', maxHeight: '100px'}}>
-            <code>{JSON.stringify(params, null, 2)}</code>
-          </pre>
+        <div className='json-fields'>
+          <p>Now acting on:</p>
+          <div className='params'>
+            {Object.entries(params.event).map(([key, value]) => {
+              if (key === 'content' && value[0] === '{' && !Array.isArray(value)) {
+                return (
+                  <>
+                  <div>{key}:</div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Property</th>
+                        <th>Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Object.entries(JSON.parse(value)).map(([k, v]) => {
+                            <tr key={k}>
+                              <td>{k}</td>
+                              <td>{v}</td>
+                            </tr>
+                          })}
+                    </tbody>
+                  </table>
+                  </>
+                );
+              } else if (key === 'tags' && Array.isArray(value) && Array.length > 0) {
+                return (
+                  <p className='tags'>{key}: {value.join(',&nbsp;')}</p>
+                );
+              } else if (key === 'kind'){
+                return (
+                  <p>{key}: {value}_{kinds.list[(JSON.parse(params.event.kind))]}</p>
+                )
+              } else {
+                return (
+                  <p>{key}: {value}</p>
+                );
+              }
+            })}
+          </div>
+          </div>
         </>
-      )}
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'space-around'
-        }}
-      >
+      ) : null}
+      <div className='sign-selection'>
         <button
-          style={{marginTop: '5px'}}
+          className='forever-btn'
           onClick={authorizeHandler('forever')}
         >
           authorize forever
         </button>
         <button
-          style={{marginTop: '5px'}}
+          className='expireable-btn'
           onClick={authorizeHandler('expirable')}
         >
           authorize for 5 minutes
         </button>
-        <button style={{marginTop: '5px'}} onClick={authorizeHandler('single')}>
+        <button className='single-btn' onClick={authorizeHandler('single')}>
           authorize just this
         </button>
-        <button style={{marginTop: '5px'}} onClick={authorizeHandler('no')}>
+        <button className='no-btn' onClick={authorizeHandler('no')}>
           cancel
         </button>
       </div>
+    </main>
     </>
   )
 
