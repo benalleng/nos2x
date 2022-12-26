@@ -1,4 +1,4 @@
-# nos2x
+# astralSign
 ### notes and other stuff signed by an extension
 
 ## Nostr Signer Extension
@@ -20,9 +20,9 @@ https://user-images.githubusercontent.com/1653275/149637382-65d50a85-fe30-4259-b
 
 ## Install
 
-* [Firefox Add-on](https://addons.mozilla.org/en-US/firefox/addon/nos2x/)
-* [Chrome Extension](https://chrome.google.com/webstore/detail/nos2x/kpgefcfmnafjgpblomihpgmejjdanjjp)
-* `git clone https://github.com/fiatjaf/nos2x && cd nos2x && yarn && yarn run build` then load as unpackaged on chrome://extensions with "developer mode" enabled
+* [Firefox Add-on](https://addons.mozilla.org/en-US/firefox/addon/astralSign/)
+* [Chrome Extension](https://chrome.google.com/webstore/detail/astralSign/kpgefcfmnafjgpblomihpgmejjdanjjp)
+* `git clone https://github.com/fiatjaf/astralSign && cd astralSign && yarn && yarn run build` then load as unpackaged on chrome://extensions with "developer mode" enabled
 
 ## Screenshots
 
