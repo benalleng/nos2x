@@ -19,7 +19,7 @@ window.nostr = {
       window.postMessage(
         {
           id,
-          ext: 'nos2x',
+          ext: 'astralSign',
           type,
           params
         },
@@ -43,13 +43,13 @@ window.addEventListener('message', message => {
   if (
     !message.data ||
     !message.data.response ||
-    message.data.ext !== 'nos2x' ||
+    message.data.ext !== 'astralSign' ||
     !window.nostr._requests[message.data.id]
   )
     return
 
   if (message.data.response.error) {
-    let error = new Error('nos2x: ' + message.data.response.error.message)
+    let error = new Error('astralSign: ' + message.data.response.error.message)
     error.stack = message.data.response.error.stack
     window.nostr._requests[message.data.id].reject(error)
   } else {
