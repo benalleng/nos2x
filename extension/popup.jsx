@@ -1,5 +1,4 @@
 import browser from 'webextension-polyfill'
-import * as clipboard from 'clipboard-polyfill';
 import {render} from 'react-dom'
 import {getPublicKey} from 'nostr-tools'
 import {bech32} from 'bech32'
