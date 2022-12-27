@@ -1,5 +1,4 @@
 import browser from 'webextension-polyfill'
-import * as clipboard from 'clipboard-polyfill';
 import {render} from 'react-dom'
 import {getPublicKey} from 'nostr-tools'
 import React, {useState, useEffect} from 'react'
@@ -65,7 +64,7 @@ function Popup() {
 
   async function handleCopyText() {
     try {
-      await clipboard.writeText(key);
+      await navigator.clipboard.writeText(key);
       setTooltipText("Copied!");
     } catch (error) {
       setTooltipText("Failed to Copy text")
