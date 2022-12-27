@@ -211,11 +211,6 @@
     "inherits" "^2.0.1"
     "safe-buffer" "^5.0.1"
 
-"clipboard-polyfill@^4.0.0-rc1":
-  "integrity" "sha512-Cel03Es9ZgP6pYA2JT9cZ2VgvOH2/EHgB7jji84FpINBJWqfMEwiI1Y3LstVL+E43cm3CnCrLL2vwb9DMbr28A=="
-  "resolved" "https://registry.npmjs.org/clipboard-polyfill/-/clipboard-polyfill-4.0.0-rc1.tgz"
-  "version" "4.0.0-rc1"
-
 "color-convert@^2.0.1":
   "integrity" "sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ=="
   "resolved" "https://registry.npmjs.org/color-convert/-/color-convert-2.0.1.tgz"

@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
-    "clipboard-polyfill": "^4.0.0-rc1",
     "esbuild": "^0.14.11",
     "esbuild-plugin-alias": "^0.2.1",
     "eslint": "^8.6.0",
