@@ -10,12 +10,13 @@
     "48": "icons/48x48.png",
     "128": "icons/128x128.png"
   },
+  "options_page": "options.html",
   "background": {
-    "scripts": [
+    "service_worker": [
       "background.build.js"
     ]
   },
-  "browser_action": {
+  "action": {
     "default_title": "astralSign",
     "default_popup": "popup.html"
   },
