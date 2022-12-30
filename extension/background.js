@@ -1,6 +1,7 @@
 import browser from 'webextension-polyfill'
 import {validateEvent, signEvent, getEventHash, getPublicKey} from 'nostr-tools'
 import {encrypt, decrypt} from 'nostr-tools/nip04'
+import {Mutex} from 'async-mutex'
 
 import {
   PERMISSIONS_REQUIRED,
@@ -8,7 +9,13 @@ import {
   updatePermission
 } from './common'
 
-const prompts = {}
+let openPrompt = null
+let promptMutex = new Mutex()
+let releasePromptMutex = () => {}
+
+browser.runtime.onInstalled.addListener((_, __, reason) => {
+  if (reason === 'install') browser.runtime.openOptionsPage()
+})
 
 browser.runtime.onMessage.addListener(async (req, sender) => {
   let {prompt} = req
@@ -23,9 +30,15 @@ browser.runtime.onMessage.addListener(async (req, sender) => {
 browser.runtime.onMessageExternal.addListener(
   async ({type, params}, sender) => {
     let extensionId = new URL(sender.url).host
-    handleContentScriptMessage({type, params, host: extensionId})
+    return handleContentScriptMessage({type, params, host: extensionId})
   }
 )
+
+browser.windows.onRemoved.addListener(windowId => {
+  if (openPrompt) {
+    handlePromptMessage({condition: 'no'}, null)
+  }
+})
 
 async function handleContentScriptMessage({type, params, host}) {
   let level = await readPermissionLevel(host)
@@ -57,15 +70,19 @@ async function handleContentScriptMessage({type, params, host}) {
       case 'getPublicKey': {
         return getPublicKey(sk)
       }
+      case 'getRelays': {
+        let results = await browser.storage.local.get('relays')
+        return results.relays || {}
+      }
       case 'signEvent': {
         let {event} = params
 
         if (!event.pubkey) event.pubkey = getPublicKey(sk)
         if (!event.id) event.id = getEventHash(event)
-
         if (!validateEvent(event)) return {error: 'invalid event'}
 
-        return await signEvent(event, sk)
+        event.sig = await signEvent(event, sk)
+        return event
       }
       case 'nip04.encrypt': {
         let {peer, plaintext} = params
@@ -85,25 +102,31 @@ function handlePromptMessage({id, condition, host, level}, sender) {
   switch (condition) {
     case 'forever':
     case 'expirable':
-      prompts[id]?.resolve?.()
+      openPrompt?.resolve?.()
       updatePermission(host, {
         level,
         condition
       })
       break
     case 'single':
-      prompts[id]?.resolve?.()
+      openPrompt?.resolve?.()
       break
     case 'no':
-      prompts[id]?.reject?.()
+      openPrompt?.reject?.()
       break
   }
 
-  delete prompts[id]
-  browser.windows.remove(sender.tab.windowId)
+  openPrompt = null
+  releasePromptMutex()
+
+  if (sender) {
+    browser.windows.remove(sender.tab.windowId)
+  }
 }
 
-function promptPermission(host, level, params) {
+async function promptPermission(host, level, params) {
+  releasePromptMutex = await promptMutex.acquire()
+
   let id = Math.random().toString().slice(4)
   let qs = new URLSearchParams({
     host,
@@ -113,13 +136,13 @@ function promptPermission(host, level, params) {
   })
 
   return new Promise((resolve, reject) => {
+    openPrompt = {resolve, reject}
+
     browser.windows.create({
       url: `${browser.runtime.getURL('prompt.html')}?${qs.toString()}`,
       type: 'popup',
       width: 600,
       height: 400
     })
-
-    prompts[id] = {resolve, reject}
   })
 }
