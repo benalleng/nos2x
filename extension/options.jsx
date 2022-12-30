@@ -3,15 +3,18 @@ import React, {useState, useCallback, useEffect} from 'react'
 import {render} from 'react-dom'
 import {normalizeRelayURL} from 'nostr-tools/relay'
 import {generatePrivateKey} from 'nostr-tools/keys'
+import { generateSeedWords, privateKeyFromSeed, seedFromWords, validateWords } from 'nostr-tools/nip06'
 
-import {getPermissionsString, readPermissions} from './common'
+import {getPermissionsString, readPermissions, removePermission, updatePermission} from './common'
 
 function Options() {
   let [key, setKey] = useState('')
   let [relays, setRelays] = useState([])
   let [newRelayURL, setNewRelayURL] = useState('')
-  let [permissions, setPermissions] = useState()
+  let [permissions, setPermissions] = useState([])
   let [message, setMessage] = useState('')
+  let [mnemonic, setMnemonic] = useState('')
+  let [mnemonicKey, setMnemonicKey] = useState('')
   let [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   const showMessage = useCallback(msg => {
@@ -20,8 +23,9 @@ function Options() {
   })
 
   useEffect(() => {
-    browser.storage.local.get(['private_key', 'relays']).then(results => {
+    browser.storage.local.get(['private_key', 'relays', 'mnemonic']).then(results => {
       if (results.private_key) setKey(results.private_key)
+      if (results.mnemonic) setMnemonic(results.mnemonic)
       if (results.relays) {
         let relaysList = []
         for (let url in results.relays) {
@@ -50,8 +54,12 @@ function Options() {
     })
   }, [])
 
+  console.log('permissions', permissions)
+  console.log('local browser storage', browser.storage.local)
+
   return (
     <>
+    <main className='options'>
       <section className="header">
         <span className="logo">
           <img src="./icons/astral.svg" />
@@ -110,6 +118,7 @@ function Options() {
               <input
                 style={{width: '500px'}}
                 value={key}
+                type={isPasswordVisible ? 'text' : 'password'}
                 onChange={handleKeyChange}
               />
               {key === '' && <button onClick={generate}>generate</button>}
@@ -124,6 +133,9 @@ function Options() {
               save
             </button>
           </div>
+          <button onClick={() => handleMnemonic()}>generate Mnemonic</button>
+          <p>{mnemonic}</p>
+
         </label>
         {permissions?.length > 0 && (
           <>
@@ -138,7 +150,7 @@ function Options() {
                 </tr>
               </thead>
               <tbody>
-                {permissions.map(({host, level, condition, created_at}) => (
+                {permissions.map(({host, level, condition, created_at}, index) => (
                   <tr key={host}>
                     <td>{host}</td>
                     <td>{getPermissionsString(level)}</td>
@@ -150,6 +162,10 @@ function Options() {
                         .split('T')
                         .join(' ')}
                     </td>
+                    <td>{index}</td>
+                    <td>
+                      <button onClick={() => handlePermissionRemove(index)}>Remove Permission</button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -158,6 +174,7 @@ function Options() {
         )}
       </div>
       <div style={{marginTop: '12px', fontSize: '120%'}}>{message}</div>
+      </main>
     </>
   )
 
@@ -172,7 +189,8 @@ function Options() {
 
   async function saveKey() {
     await browser.storage.local.set({
-      private_key: key
+      private_key: key,
+      mnemonic: mnemonic
     })
     showMessage('saved private key!')
   }
@@ -218,6 +236,29 @@ function Options() {
 
   function handlePasswordVisibility() {
     setIsPasswordVisible(!isPasswordVisible)
+  }
+
+  async function handlePermissionRemove(index) {
+    try {
+      permissions.splice(index, 1);
+      await browser.storage.local.set({ permissions });
+      window.location.reload()
+      console.log(permissions)
+    } catch {
+      console.log('error removing permission')
+    }
+  }
+
+  function handleMnemonic() {
+    let mnemonic = generateSeedWords()
+    setMnemonic(mnemonic)
+    if (!!validateWords(mnemonic)) {
+      let seed = seedFromWords(mnemonic)
+      let seedKey = privateKeyFromSeed(seed)
+      setMnemonicKey(seedKey)
+      setKey(mnemonicKey)
+      console.log(key)
+    }
   }
 }
 

@@ -7,7 +7,7 @@ import React, {useState, useRef, useEffect} from 'react'
 function Popup() {
   let [key, setKey] = useState('')
   let keys = useRef([])
-  let [tooltipText, setTooltipText] = useState("Click to copy!");
+  let [tooltipText, setTooltipText] = useState('')
 
   useEffect(() => {
     browser.storage.local.get('private_key').then(results => {
@@ -30,41 +30,47 @@ function Popup() {
 
   return (
     <>
-    <main className='popup'>
-    <section className='header'>
-        <span className='logo'>
-          <img src="./icons/astral.svg"/>
-        </span>
-      <span className='astral-1'>astral</span><span className='astral-2'>Sign</span>
-      </section>
-      {key === null ? (
-        <p style={{width: '150px'}}>
-          you don't have a private key set. use the{' '}
-          <a href="#" onClick={goToOptionsPage}>
-            options page
-          </a>{' '}
-          to set one.
-        </p>
-      ) : (
-        <>
-          <p>
-            <a onClick={toggleKeyType}>↩️</a> your public key:
+      <main className="popup">
+        <section className="header">
+          <span className="logo">
+            <img src="./icons/astral.svg" />
+          </span>
+          <span className="astral-1">astral</span>
+          <span className="astral-2">Sign</span>
+        </section>
+        {key === null ? (
+          <p style={{width: '150px'}}>
+            you don't have a private key set. use the{' '}
+            <a href="#" onClick={goToOptionsPage}>
+              options page
+            </a>{' '}
+            to set one.
           </p>
-          <b>Your public key:</b>
-          <pre className='public-key-field'>
-            <code onClick={() => handleCopyText()} id="public-key">{key}</code>
-          </pre>
-          <span className="tooltip">{tooltipText}</span>
-          <p>
-            <small>
-              Key{' '}
-              <a className='options-link' href="#" onClick={goToOptionsPage}>
-                options
-              </a>
-            </small>
-          </p>
-        </>
-      )}
+        ) : (
+          <>
+            <b>Your public key:</b> 
+            <button onClick={() => handleCopyText()} >
+              <span class="material-symbols-outlined">content_copy</span>
+            </button>
+            <button onClick={toggleKeyType} >
+              <span class="material-symbols-outlined">autorenew</span>
+            </button>
+            <pre className="public-key-field">
+              <code id="public-key">
+                {key}
+              </code>
+            </pre>
+            <span className="tooltip">{tooltipText}</span>
+            <p>
+              <small>
+                Key{' '}
+                <a className="options-link" href="#" onClick={goToOptionsPage}>
+                  options
+                </a>
+              </small>
+            </p>
+          </>
+        )}
       </main>
     </>
   )
@@ -74,6 +80,8 @@ function Popup() {
     let nextKeyType =
       keys.current[(keys.current.indexOf(key) + 1) % keys.current.length]
     setKey(nextKeyType)
+  }
+
   function goToOptionsPage() {
     browser.tabs.create({
       url: browser.runtime.getURL('options.html'),
@@ -83,14 +91,17 @@ function Popup() {
 
   async function handleCopyText() {
     try {
-      await clipboard.writeText(key);
-      setTooltipText("Copied!");
+      await navigator.clipboard.writeText(key)
+      if (key.startsWith('npub')) {
+        setTooltipText('Copied npub!')
+      } else {
+        setTooltipText('copied pubkey!')
+      }
     } catch (error) {
-      setTooltipText("Failed to Copy text")
+      setTooltipText('Failed to Copy text')
       console.log(error)
     }
   }
-}
 }
 
 render(<Popup />, document.getElementById('main'))

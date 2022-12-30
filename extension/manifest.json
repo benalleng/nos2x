@@ -12,9 +12,7 @@
   },
   "options_page": "options.html",
   "background": {
-    "service_worker": [
-      "background.build.js"
-    ]
+    "service_worker": "background.build.js"
   },
   "action": {
     "default_title": "astralSign",
