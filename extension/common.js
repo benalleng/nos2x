@@ -1,4 +1,4 @@
-import browser from 'webextension-polyfill'
+import browser, { permissions } from 'webextension-polyfill'
 
 export const PERMISSIONS_REQUIRED = {
   getPublicKey: 1,
@@ -80,4 +80,10 @@ export async function updatePermission(host, permission) {
     created_at: Math.round(Date.now() / 1000)
   }
   browser.storage.local.set({permissions})
+}
+
+export async function removePermission(index) {
+  const currentValue = await browser.storage.local.get();
+  currentValue.permissions.splice(index, 1);
+  await browser.storage.local.set(currentValue);
 }
