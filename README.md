@@ -41,42 +41,6 @@ After you build the extension, follow these steps:
 4. Click on "Load Temporary Add-on..."
 5. Select any file from the `dist/` folder of the extension
 
-<<<<<<< HEAD
-* [Firefox Add-on](https://addons.mozilla.org/en-US/firefox/addon/nos2x/)
-* [Chrome Extension](https://chrome.google.com/webstore/detail/nos2x/kpgefcfmnafjgpblomihpgmejjdanjjp)
-
-## Develop
-
-To run the plugin from this code:
-
-```
-git clone https://github.com/fiatjaf/nos2x
-cd nos2x
-git checkout chromium                       # or git checkout firefox
-yarn                                        # or use npm or pnpm
-yarn run build
-```
-
-then ...
-
-* Chromium:
-  1. go to chrome://extensions
-  2. make sure, "developer mode" is enabled on the top right
-  3. "Load unpackaged"
-  4. select the `extension/` folder
-* Firefox:
-  1. go to about:debugging
-  2. "This Firefox"
-  3. "Load Temporary Add-on..."
-  4. select any file from the `extension/` folder
-
-## Screenshots
-
-![](assets/screenshot1.png)
-![](assets/screenshot2.png)
-![](assets/screenshot3.png)
-![](assets/screenshot4.png)
-=======
 
 ## Screenshots
 
@@ -84,7 +48,6 @@ then ...
 ![](screenshots/screenshot_options.png)
 ![](screenshots/screenshot_popup-with-key.png)
 ![](screenshots/screenshot_prompt.png)
->>>>>>> 7a9f73a6cf8fd4b474dbece9f85c1174d9a53200
 
 ## ReDesign
 
@@ -94,24 +57,9 @@ then ...
 
 [Prompt](https://fonts.google.com/specimen/Prompt?preview.text=NOS2X&preview.size=48&preview.text_type=custom&query=Prompt&category=Sans+Serif&subset=latin&noto.script=Latn)
 
-<<<<<<< HEAD
-### Logo
-![nos2x logo](assets/icon.png)
-### Logotype
-![nos2x logotype](assets/logotype.png)
-### Svg
-![nos2x svg logo](assets/logo.svg)
-
-Figma file: [https://www.figma.com](https://www.figma.com/file/04tjsv8qfWV6eeew73qbaX/Nos2x?node-id=2%3A141&t=gZQRRpXb5VRp3hpJ-1)
-
----
-
-LICENSE: public domain.
-=======
 ## License and Credits
 
 LICENSE: public domain.
 Original work by [fiatjaf](https://github.com/fiatjaf)
 
 Design taken from [Flydexo](https://github.com/Flydexo). See https://github.com/fiatjaf/nos2x/pull/15
->>>>>>> 7a9f73a6cf8fd4b474dbece9f85c1174d9a53200
