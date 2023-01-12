@@ -1,15 +1,27 @@
 {
+  "name": "nos2x-fox",
+  "description": "Nostr Signer Extension (for Firefox)",
+  "version": "1.5.0",
   "dependencies": {
+<<<<<<< HEAD
     "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
     "async-mutex": "^0.3.2",
     "bech32": "^2.0.0",
     "esbuild": "^0.14.11",
     "esbuild-plugin-alias": "^0.2.1",
+=======
+    "esbuild": "^0.16.15",
+    "esbuild-plugin-copy": "^2.0.1",
+>>>>>>> 7a9f73a6cf8fd4b474dbece9f85c1174d9a53200
     "eslint": "^8.6.0",
     "eslint-plugin-babel": "^5.3.1",
     "eslint-plugin-react": "^7.28.0",
     "events": "^3.3.0",
+<<<<<<< HEAD
     "nostr-tools": "^0.22.1",
+=======
+    "nostr-tools": "^1.1.0",
+>>>>>>> 7a9f73a6cf8fd4b474dbece9f85c1174d9a53200
     "prettier": "^2.5.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -20,6 +32,14 @@
   "scripts": {
     "build": "./build.js prod",
     "watch": "ag -l --js | entr ./build.js",
+<<<<<<< HEAD
     "package": "./build.js prod; cd extension; zip -r archive *; cd ..; mv extension/archive.zip ./nos2x.zip"
+=======
+    "sources": "rm -f extension/*.build.*; zip -r sources . -i extension build.js README.md",
+    "package": "./build.js prod; cd dist; zip -r archive *; cd ..; mv dist/archive.zip ./nos2x-fox.zip"
+  },
+  "devDependencies": {
+    "esbuild-sass-plugin": "^2.4.5"
+>>>>>>> 7a9f73a6cf8fd4b474dbece9f85c1174d9a53200
   }
 }

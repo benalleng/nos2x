@@ -30,6 +30,7 @@ browser.runtime.onMessage.addListener(async (req, sender) => {
 browser.runtime.onMessageExternal.addListener(
   async ({type, params}, sender) => {
     let extensionId = new URL(sender.url).host
+<<<<<<< HEAD:extension/background.js
     return handleContentScriptMessage({type, params, host: extensionId})
   }
 )
@@ -40,6 +41,12 @@ browser.windows.onRemoved.addListener(windowId => {
   }
 })
 
+=======
+    handleContentScriptMessage({type, params, host: extensionId})
+  }
+)
+
+>>>>>>> 7a9f73a6cf8fd4b474dbece9f85c1174d9a53200:src/background.js
 async function handleContentScriptMessage({type, params, host}) {
   let level = await readPermissionLevel(host)
 
@@ -69,10 +76,13 @@ async function handleContentScriptMessage({type, params, host}) {
     switch (type) {
       case 'getPublicKey': {
         return getPublicKey(sk)
+<<<<<<< HEAD:extension/background.js
       }
       case 'getRelays': {
         let results = await browser.storage.local.get('relays')
         return results.relays || {}
+=======
+>>>>>>> 7a9f73a6cf8fd4b474dbece9f85c1174d9a53200:src/background.js
       }
       case 'signEvent': {
         let {event} = params
@@ -124,9 +134,13 @@ function handlePromptMessage({id, condition, host, level}, sender) {
   }
 }
 
+<<<<<<< HEAD:extension/background.js
 async function promptPermission(host, level, params) {
   releasePromptMutex = await promptMutex.acquire()
 
+=======
+function promptPermission(host, level, params) {
+>>>>>>> 7a9f73a6cf8fd4b474dbece9f85c1174d9a53200:src/background.js
   let id = Math.random().toString().slice(4)
   let qs = new URLSearchParams({
     host,

@@ -1,5 +1,7 @@
-# nos2x
-### notes and other stuff signed by an extension
+# nos2x-fox (nos2x for Forefox)
+notes and other stuff signed by an extension
+
+This is a fork from https://github.com/fiatjaf/nos2x focused on Firefox and related browsers.
 
 ## Nostr Signer Extension
 
@@ -15,12 +17,31 @@ async window.nostr.nip04.encrypt(pubkey, plaintext): string // returns ciphertex
 async window.nostr.nip04.decrypt(pubkey, ciphertext): string // takes ciphertext+iv as specified in nip04
 ```
 
-## Demo Video
-
-https://user-images.githubusercontent.com/1653275/149637382-65d50a85-fe30-4259-b7de-99c88b089b53.mp4
-
 ## Install
 
+* Look into [Releases](https://github.com/diegogurpegui/nos2x-fox/releases)
+* [Original Firefox Add-on](https://addons.mozilla.org/en-US/firefox/addon/nos2x/)
+  This is the one originally published by **fiatjaf**.
+
+## Develop
+
+To run the plugin from this code:
+
+```
+$ git clone https://github.com/diegogurpegui/nos2x-fox
+$ cd nos2x-fox
+$ yarn install
+$ yarn run build
+```
+
+After you build the extension, follow these steps:
+1. Open Firefox
+2. Go to about:debugging
+3. Click on "This Firefox" on the left
+4. Click on "Load Temporary Add-on..."
+5. Select any file from the `dist/` folder of the extension
+
+<<<<<<< HEAD
 * [Firefox Add-on](https://addons.mozilla.org/en-US/firefox/addon/nos2x/)
 * [Chrome Extension](https://chrome.google.com/webstore/detail/nos2x/kpgefcfmnafjgpblomihpgmejjdanjjp)
 
@@ -55,6 +76,15 @@ then ...
 ![](assets/screenshot2.png)
 ![](assets/screenshot3.png)
 ![](assets/screenshot4.png)
+=======
+
+## Screenshots
+
+![](screenshots/screenshot_popup.png)
+![](screenshots/screenshot_options.png)
+![](screenshots/screenshot_popup-with-key.png)
+![](screenshots/screenshot_prompt.png)
+>>>>>>> 7a9f73a6cf8fd4b474dbece9f85c1174d9a53200
 
 ## ReDesign
 
@@ -64,6 +94,7 @@ then ...
 
 [Prompt](https://fonts.google.com/specimen/Prompt?preview.text=NOS2X&preview.size=48&preview.text_type=custom&query=Prompt&category=Sans+Serif&subset=latin&noto.script=Latn)
 
+<<<<<<< HEAD
 ### Logo
 ![nos2x logo](assets/icon.png)
 ### Logotype
@@ -76,3 +107,11 @@ Figma file: [https://www.figma.com](https://www.figma.com/file/04tjsv8qfWV6eeew7
 ---
 
 LICENSE: public domain.
+=======
+## License and Credits
+
+LICENSE: public domain.
+Original work by [fiatjaf](https://github.com/fiatjaf)
+
+Design taken from [Flydexo](https://github.com/Flydexo). See https://github.com/fiatjaf/nos2x/pull/15
+>>>>>>> 7a9f73a6cf8fd4b474dbece9f85c1174d9a53200

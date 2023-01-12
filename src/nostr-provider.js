@@ -60,5 +60,9 @@ window.addEventListener('message', message => {
     window.nostr._requests[message.data.id].resolve(message.data.response)
   }
 
+<<<<<<< HEAD:extension/nostr-provider.js
   delete window.nostr._requests[message.data.id];
+=======
+  delete window.nostr._requests[message.data.id]
+>>>>>>> 7a9f73a6cf8fd4b474dbece9f85c1174d9a53200:src/nostr-provider.js
 })
