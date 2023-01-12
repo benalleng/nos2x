@@ -14,7 +14,6 @@ function Options() {
   let [permissions, setPermissions] = useState([])
   let [message, setMessage] = useState('')
   let [mnemonic, setMnemonic] = useState('')
-  let [mnemonicKey, setMnemonicKey] = useState('')
   let [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   const showMessage = useCallback(msg => {
@@ -56,6 +55,8 @@ function Options() {
 
   console.log('permissions', permissions)
   console.log('local browser storage', browser.storage.local)
+  console.log('seed words', mnemonic)
+  console.log('key', key)
 
   return (
     <>
@@ -250,13 +251,12 @@ function Options() {
   }
 
   function handleMnemonic() {
-    let mnemonic = generateSeedWords()
-    setMnemonic(mnemonic)
+    setMnemonic(generateSeedWords())
     if (!!validateWords(mnemonic)) {
       let seed = seedFromWords(mnemonic)
-      setMnemonic(privateKeyFromSeed(seed))
-      setKey(mnemonicKey)
-      console.log(mnemonicKey)
+      let key = privateKeyFromSeed(seed)
+      console.log(key)
+      setKey(key)
     }
   }
 }
