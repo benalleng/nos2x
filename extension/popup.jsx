@@ -35,8 +35,7 @@ function Popup() {
           <span className="logo">
             <img src="./icons/astral.svg" />
           </span>
-          <span className="astral-1">astral</span>
-          <span className="astral-2">Sign</span>
+          <span className="title">NOS2X</span>
         </section>
         {key === null ? (
           <p style={{width: '150px'}}>

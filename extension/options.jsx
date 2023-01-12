@@ -13,7 +13,6 @@ function Options() {
   let [newRelayURL, setNewRelayURL] = useState('')
   let [permissions, setPermissions] = useState([])
   let [message, setMessage] = useState('')
-  let [mnemonic, setMnemonic] = useState('')
   let [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   const showMessage = useCallback(msg => {
@@ -22,9 +21,8 @@ function Options() {
   })
 
   useEffect(() => {
-    browser.storage.local.get(['private_key', 'relays', 'mnemonic']).then(results => {
+    browser.storage.local.get(['private_key', 'relays']).then(results => {
       if (results.private_key) setKey(results.private_key)
-      if (results.mnemonic) setMnemonic(results.mnemonic)
       if (results.relays) {
         let relaysList = []
         for (let url in results.relays) {
@@ -55,8 +53,7 @@ function Options() {
 
   console.log('permissions', permissions)
   console.log('local browser storage', browser.storage.local)
-  console.log('seed words', mnemonic)
-  console.log('key', key)
+  if (!!key) console.log('key', key)
 
   return (
     <>
@@ -134,8 +131,6 @@ function Options() {
               save
             </button>
           </div>
-          <button onClick={() => handleMnemonic()}>generate Mnemonic</button>
-          <p>{mnemonic}</p>
 
         </label>
         {permissions?.length > 0 && (
@@ -191,7 +186,6 @@ function Options() {
   async function saveKey() {
     await browser.storage.local.set({
       private_key: key,
-      mnemonic: mnemonic
     })
     showMessage('saved private key!')
   }
@@ -250,15 +244,16 @@ function Options() {
     }
   }
 
-  function handleMnemonic() {
-    setMnemonic(generateSeedWords())
-    if (!!validateWords(mnemonic)) {
-      let seed = seedFromWords(mnemonic)
-      let key = privateKeyFromSeed(seed)
-      console.log(key)
-      setKey(key)
-    }
-  }
+  // function handleMnemonic() {
+  //   setMnemonic(generateSeedWords())
+  //   let seed = seedFromWords(mnemonic)
+  //   let key = privateKeyFromSeed(seed)
+  //   console.log(seed)
+  //   setKey(key)
+  //   if (!!validateWords(mnemonic)) {
+  //     return
+  //   }
+  // }
 }
 
 render(<Options />, document.getElementById('main'))
